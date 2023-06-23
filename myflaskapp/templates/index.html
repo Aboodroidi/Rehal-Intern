@@ -3,58 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <title>Student Information</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+
 </head>
-<body>
-    <h1>Student Information</h1>
-    
-    <h2>Statistics</h2>
 
-    <h3>Average Student Age: {{ average_age }}</h3>
+<h1 class="mt-4 mb-4">Student Information</h1>
 
-    <h3>Students per Class:</h3>
-    {% for class_info in student_per_class %}
-    <p>Class ID: {{ class_info[0] }}, Student Count: {{ class_info[1] }}</p>
-    {% endfor %}
+    <div class="card mb-4">
+        <div class="card-header">
+            <h2>Statistics</h2>
+        </div>
+        <div class="card-body">
+            <h3>Average Student Age:{{ average_age }}</h3>
 
-    <h3>Students per country:</h3>
-    {% for country_name, count in student_per_country %}
-        <p>{{ country_name }}: {{ count }}</p>
-    {% endfor %}
+            <h3>Students per Class:</h3>
+            {% for class_info in student_per_class %}
+                <p>Class ID: {{ class_info[0] }}, Student Count: {{ class_info[1] }}</p>
+            {% endfor %}
 
-    <h1>Student Information</h1>
-    <table>
-        <tr>
-            <th>Name</th>
-            <th>Class ID</th>
-            <th>Country</th>
-            <th>Date of Birth</th>
-        </tr>
-        {% for student in students %}
-        <tr>
-            <td>{{ student.name }}</td>
-            <td>{{ student.class_id }}</td>
-            <td>{{ student.country.country_name }}</td>
-            <td>{{ student.date_of_birth.strftime('%Y-%m-%d') }}</td>  <!-- Formatting date to display only date and not time -->
-        </tr>
-        {% endfor %}
+            <h3>Students per Country:</h3>
+            {% for country_name, count in student_per_country %}
+                <p>{{ country_name }}: {{ count }}</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <table class="table">
+
+    <body class="light-mode">
+    <button onclick="toggleDarkMode()">Toggle Dark Mode</button>
+
+
+<body class="container">
+
+    <h1 class="mt-4 mb-4">Student Information</h1>
+
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th>Name</th>
+                <th>Class ID</th>
+                <th>Country</th>
+                <th>Date of Birth</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in students %}
+            <tr>
+                <td>{{ student.name }}</td>
+                <td>{{ student.class_id }}</td>
+                <td>{{ student.country.country_name }}</td>
+                <td>{{ student.date_of_birth }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
     </table>
 
-    <h2>Add Student</h2>
+    <h2 class="mt-4 mb-4">Add Student</h2>
     <form action="/add_student" method="post">
-        <label for="name">Name:</label><br>
-        <input type="text" id="name" name="name"><br>
-        
-        <label for="dob">Date of Birth:</label><br>
-        <input type="date" id="dob" name="dob"><br>
-        
-        <label for="class_id">Class ID:</label><br>
-        <input type="number" id="class_id" name="class_id"><br>
-        
-        <label for="country_name">Country:</label><br>
-        <input type="text" id="country_name" name="country_name"><br>
-        
-        <input type="submit" value="Submit">
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" class="form-control" id="name" name="name">
+        </div>
+
+        <div class="form-group">
+            <label for="dob">Date of Birth:</label>
+            <input type="date" class="form-control" id="dob" name="dob">
+        </div>
+
+        <div class="form-group">
+            <label for="class_id">Class ID:</label>
+            <input type="number" class="form-control" id="class_id" name="class_id">
+        </div>
+
+        <div class="form-group">
+            <label for="country_name">Country:</label>
+            <input type="text" class="form-control" id="country_name" name="country_name">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
     </form>
+    <script src="scripts.js"></script>
 </body>
+
 
 </html>
