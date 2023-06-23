@@ -11,16 +11,16 @@
 
     <h3>Average Student Age: {{ average_age }}</h3>
 
-    <h3>Students per class:</h3>
+    <h3>Students per Class:</h3>
     {% for class_name, count in student_per_class %}
         <p>{{ class_name }}: {{ count }}</p>
     {% endfor %}
+
 
     <h3>Students per country:</h3>
     {% for country_name, count in student_per_country %}
         <p>{{ country_name }}: {{ count }}</p>
     {% endfor %}
-
 
         <h1>Student Information</h1>
         <table>
