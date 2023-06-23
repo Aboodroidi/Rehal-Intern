@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Information</title>
+</head>
+<body>
+    <h1>Student Information</h1>
+    {% for student in students %}
+    <div>
+        <h2>{{ student.name }}</h2>
+        <p>Class ID: {{ student.class_id }}</p>
+        <p>Country ID: {{ student.country_id }}</p>
+        <p>Date of Birth: {{ student.date_of_birth }}</p>
+    </div>
+    {% endfor %}
+
+    <h2>Add Student</h2>
+    <form action="/add_student" method="post">
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name"><br>
+        <label for="dob">Date of Birth:</label><br>
+        <input type="date" id="dob" name="dob"><br>
+        <label for="class_id">Class ID:</label><br>
+        <input type="number" id="class_id" name="class_id"><br>
+        <label for="country_id">Country ID:</label><br>
+        <input type="number" id="country_id" name="country_id"><br>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
