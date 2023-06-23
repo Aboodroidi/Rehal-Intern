@@ -12,50 +12,49 @@
     <h3>Average Student Age: {{ average_age }}</h3>
 
     <h3>Students per Class:</h3>
-    {% for class_name, count in student_per_class %}
-        <p>{{ class_name }}: {{ count }}</p>
+    {% for class_info in student_per_class %}
+    <p>Class ID: {{ class_info[0] }}, Student Count: {{ class_info[1] }}</p>
     {% endfor %}
-
 
     <h3>Students per country:</h3>
     {% for country_name, count in student_per_country %}
         <p>{{ country_name }}: {{ count }}</p>
     {% endfor %}
 
-        <h1>Student Information</h1>
-        <table>
-            <tr>
-                <th>Name</th>
-                <th>Class ID</th>
-                <th>Country</th>
-                <th>Date of Birth</th>
-            </tr>
-            {% for student in students %}
-            <tr>
-                <td>{{ student.name }}</td>
-                <td>{{ student.class_id }}</td>
-                <td>{{ student.country.country_name }}</td>
-                <td>{{ student.date_of_birth }}</td>
-            </tr>
-            {% endfor %}
-        </table>
-    
-        <h2>Add Student</h2>
-        <form action="/add_student" method="post">
-            <label for="name">Name:</label><br>
-            <input type="text" id="name" name="name"><br>
-            
-            <label for="dob">Date of Birth:</label><br>
-            <input type="date" id="dob" name="dob"><br>
-            
-            <label for="class_id">Class ID:</label><br>
-            <input type="number" id="class_id" name="class_id"><br>
-            
-            <label for="country_name">Country:</label><br>
-            <input type="text" id="country_name" name="country_name"><br>
-            
-            <input type="submit" value="Submit">
-        </form>
-    </body>
-    
+    <h1>Student Information</h1>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Class ID</th>
+            <th>Country</th>
+            <th>Date of Birth</th>
+        </tr>
+        {% for student in students %}
+        <tr>
+            <td>{{ student.name }}</td>
+            <td>{{ student.class_id }}</td>
+            <td>{{ student.country.country_name }}</td>
+            <td>{{ student.date_of_birth.strftime('%Y-%m-%d') }}</td>  <!-- Formatting date to display only date and not time -->
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h2>Add Student</h2>
+    <form action="/add_student" method="post">
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name"><br>
+        
+        <label for="dob">Date of Birth:</label><br>
+        <input type="date" id="dob" name="dob"><br>
+        
+        <label for="class_id">Class ID:</label><br>
+        <input type="number" id="class_id" name="class_id"><br>
+        
+        <label for="country_name">Country:</label><br>
+        <input type="text" id="country_name" name="country_name"><br>
+        
+        <input type="submit" value="Submit">
+    </form>
+</body>
+
 </html>

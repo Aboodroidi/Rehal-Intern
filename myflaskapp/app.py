@@ -1,16 +1,16 @@
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.sql import func
 from datetime import datetime
-from sqlalchemy import func
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test2.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
 db = SQLAlchemy(app)
 
-class Class(db.Model):
+class SchoolClass(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     class_name = db.Column(db.String(80))
-    students = db.relationship('Student', backref='class', lazy=True)
+    students = db.relationship('Student', backref='school_class', lazy=True)
 
 class Country(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -19,7 +19,7 @@ class Country(db.Model):
 
 class Student(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    class_id = db.Column(db.Integer, db.ForeignKey('class.id'))
+    class_id = db.Column(db.Integer, db.ForeignKey('school_class.id'))
     country_id = db.Column(db.Integer, db.ForeignKey('country.id'))
     name = db.Column(db.String(80))
     date_of_birth = db.Column(db.DateTime)
@@ -33,7 +33,7 @@ def index():
     countries = Country.query.all()
 
     # Calculating statistics
-    student_per_class = db.session.query(Class.class_name, func.count(Student.id)).join(Student).group_by(Class.id).all()
+    student_per_class = db.session.query(SchoolClass.class_name, func.count(Student.id)).join(Student).group_by(SchoolClass.id).all()
     student_per_country = db.session.query(Country.country_name, func.count(Student.id)).join(Student).group_by(Country.id).all()
     average_age = db.session.query(func.avg(func.julianday(datetime.now()) - func.julianday(Student.date_of_birth))/365.25).scalar()
 
@@ -44,23 +44,31 @@ def add_student():
     name = request.form.get('name')
     dob = request.form.get('dob')  # date_of_birth
     dob = datetime.strptime(dob, '%Y-%m-%d')  # convert string to datetime object
-    class_id = request.form.get('class_id')
+    class_name = request.form.get('class_name')
     country_name = request.form.get('country_name')
-    
+
+    # Get or create SchoolClass and Country
+    school_class = SchoolClass.query.filter_by(class_name=class_name).first()
+    if not school_class:
+        school_class = SchoolClass(class_name=class_name)
+        db.session.add(school_class)
+        db.session.commit()
+
     country = Country.query.filter_by(country_name=country_name).first()
-    if country is None:
+    if not country:
         country = Country(country_name=country_name)
         db.session.add(country)
         db.session.commit()
 
-    student = Student(name=name, date_of_birth=dob, class_id=class_id, country_id=country.id)
+    student = Student(name=name, date_of_birth=dob, class_id=school_class.id, country_id=country.id)
     db.session.add(student)
     db.session.commit()
 
     return 'Student added successfully'
 
-
 if __name__ == '__main__':
     with app.app_context():
+        db.drop_all()  # drop all tables
         db.create_all()  # create tables
     app.run(debug=True)
+
