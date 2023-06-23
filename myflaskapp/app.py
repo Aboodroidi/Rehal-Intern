@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import func
 from datetime import datetime
@@ -64,11 +64,10 @@ def add_student():
     db.session.add(student)
     db.session.commit()
 
-    return 'Student added successfully'
+    return redirect(url_for('index'))  # redirect to the main page
 
 if __name__ == '__main__':
     with app.app_context():
         db.drop_all()  # drop all tables
         db.create_all()  # create tables
     app.run(debug=True)
-
