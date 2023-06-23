@@ -1,9 +1,10 @@
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from sqlalchemy import func
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test2.db'
 db = SQLAlchemy(app)
 
 class Class(db.Model):
@@ -29,7 +30,14 @@ class Student(db.Model):
 @app.route('/')
 def index():
     students = Student.query.all()
-    return render_template('index.html', students=students)
+    countries = Country.query.all()
+
+    # Calculating statistics
+    student_per_class = db.session.query(Class.class_name, func.count(Student.id)).join(Student).group_by(Class.id).all()
+    student_per_country = db.session.query(Country.country_name, func.count(Student.id)).join(Student).group_by(Country.id).all()
+    average_age = db.session.query(func.avg(func.julianday(datetime.now()) - func.julianday(Student.date_of_birth))/365.25).scalar()
+
+    return render_template('index.html', students=students, countries=countries, student_per_class=student_per_class, student_per_country=student_per_country, average_age=average_age)
 
 @app.route('/add_student', methods=['POST'])
 def add_student():
@@ -37,13 +45,20 @@ def add_student():
     dob = request.form.get('dob')  # date_of_birth
     dob = datetime.strptime(dob, '%Y-%m-%d')  # convert string to datetime object
     class_id = request.form.get('class_id')
-    country_id = request.form.get('country_id')
+    country_name = request.form.get('country_name')
     
-    student = Student(name=name, date_of_birth=dob, class_id=class_id, country_id=country_id)
+    country = Country.query.filter_by(country_name=country_name).first()
+    if country is None:
+        country = Country(country_name=country_name)
+        db.session.add(country)
+        db.session.commit()
+
+    student = Student(name=name, date_of_birth=dob, class_id=class_id, country_id=country.id)
     db.session.add(student)
     db.session.commit()
 
     return 'Student added successfully'
+
 
 if __name__ == '__main__':
     with app.app_context():
