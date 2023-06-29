@@ -33,18 +33,19 @@ def index():
     countries = Country.query.all()
 
     # Calculating statistics
-    student_per_class = db.session.query(SchoolClass.class_name, func.count(Student.id)).join(Student).group_by(SchoolClass.id).all()
+    student_per_class = db.session.query(SchoolClass.id, SchoolClass.class_name, func.count(Student.id)).join(Student).group_by(SchoolClass.id).all()
     student_per_country = db.session.query(Country.country_name, func.count(Student.id)).join(Student).group_by(Country.id).all()
     average_age = db.session.query(func.avg(func.julianday(datetime.now()) - func.julianday(Student.date_of_birth))/365.25).scalar()
 
     return render_template('index.html', students=students, countries=countries, student_per_class=student_per_class, student_per_country=student_per_country, average_age=average_age)
+
 
 @app.route('/add_student', methods=['POST'])
 def add_student():
     name = request.form.get('name')
     dob = request.form.get('dob')  # date_of_birth
     dob = datetime.strptime(dob, '%Y-%m-%d')  # convert string to datetime object
-    class_name = request.form.get('class_name')
+    class_name = request.form.get('class_id')
     country_name = request.form.get('country_name')
 
     # Get or create SchoolClass and Country

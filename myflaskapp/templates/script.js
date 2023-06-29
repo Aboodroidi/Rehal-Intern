@@ -1,6 +1,4 @@
 function toggleDarkMode() {
-    var element = document.body;
-    element.classList.toggle("dark-mode");
+    document.body.classList.toggle("light-mode");
+    document.body.classList.toggle("dark-mode");
 }
-
-/* You can add more JavaScript functions here */

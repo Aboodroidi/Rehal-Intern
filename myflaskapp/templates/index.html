@@ -25,9 +25,10 @@
             <h3>Average Student Age:{{ average_age }}</h3>
 
             <h3>Students per Class:</h3>
-            {% for class_info in student_per_class %}
-                <p>Class ID: {{ class_info[0] }}, Student Count: {{ class_info[1] }}</p>
+            {% for class_id, class_name, count in student_per_class %}
+                <p>Class ID: {{ class_id }}, Student Count: {{ count }}</p>
             {% endfor %}
+
 
             <h3>Students per Country:</h3>
             {% for country_name, count in student_per_country %}
@@ -38,10 +39,7 @@
 
     <table class="table">
 
-    <body class="light-mode">
-    <button onclick="toggleDarkMode()">Toggle Dark Mode</button>
-
-
+        
 <body class="container">
 
     <h1 class="mt-4 mb-4">Student Information</h1>
@@ -91,7 +89,6 @@
 
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
-    <script src="scripts.js"></script>
 </body>
 
 
