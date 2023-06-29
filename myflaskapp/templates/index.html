@@ -59,7 +59,7 @@
                 <td>{{ student.name }}</td>
                 <td>{{ student.class_id }}</td>
                 <td>{{ student.country.country_name }}</td>
-                <td>{{ student.date_of_birth }}</td>
+                <td>{{ student.date_of_birth.strftime('%Y-%m-%d') }}</td>
             </tr>
             {% endfor %}
         </tbody>
