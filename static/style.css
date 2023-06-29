@@ -1,0 +1,18 @@
+body.dark-mode {
+    background-color: #1a1919;
+    color: #999;
+}
+
+body.dark-mode .card {
+    background-color: #333;
+    color: #ccc;
+}
+
+body.dark-mode .thead-dark th {
+    background-color: #333;
+    border-color: #454d55;
+}
+
+body.dark-mode .table td, .table th {
+    border-top: 1px solid #454d55;
+}

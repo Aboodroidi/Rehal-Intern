@@ -5,17 +5,19 @@
     <title>Student Information</title>
 
     <!-- CSS -->
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-
-
 </head>
 
-<h1 class="mt-4 mb-4">Student Information</h1>
+<body class="container">
+    <!-- <div class="d-flex justify-content-between">
+        <h1 class="mt-4 mb-4">Student Information</h1>
+        <button id="toggleDarkMode" class="btn btn-secondary mt-4 mb-4" data-dark="false">Toggle Dark Mode</button>
+    </div> -->
 
     <div class="card mb-4">
         <div class="card-header">
@@ -23,7 +25,6 @@
         </div>
         <div class="card-body">
             <h3>Average Student Age:{{ " %.2f"|format(average_age) if average_age else "0" }}</h3>
-
 
             <h3>Students per Class:</h3>
             {% for class_id, class_name, count in student_per_class %}
@@ -37,13 +38,6 @@
             {% endfor %}
         </div>
     </div>
-
-    <table class="table">
-
-        
-<body class="container">
-
-    <h1 class="mt-4 mb-4">Student Information</h1>
 
     <table class="table">
         <thead class="thead-dark">
@@ -90,7 +84,6 @@
 
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
-
-
 </html>
