@@ -37,6 +37,7 @@ def index():
     student_per_country = db.session.query(Country.country_name, func.count(Student.id)).join(Student).group_by(Country.id).all()
     average_age = db.session.query(func.avg(func.julianday(datetime.now()) - func.julianday(Student.date_of_birth))/365.25).scalar()
 
+
     return render_template('index.html', students=students, countries=countries, student_per_class=student_per_class, student_per_country=student_per_country, average_age=average_age)
 
 

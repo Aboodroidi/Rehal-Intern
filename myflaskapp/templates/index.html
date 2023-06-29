@@ -22,11 +22,12 @@
             <h2>Statistics</h2>
         </div>
         <div class="card-body">
-            <h3>Average Student Age:{{ average_age }}</h3>
+            <h3>Average Student Age:{{ " %.2f"|format(average_age) if average_age else "0" }}</h3>
+
 
             <h3>Students per Class:</h3>
             {% for class_id, class_name, count in student_per_class %}
-                <p>Class ID: {{ class_id }}, Student Count: {{ count }}</p>
+                <p>Class ID: {{ class_id }}, {{ count }}</p>
             {% endfor %}
 
 
